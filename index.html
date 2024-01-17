@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #console {
+                font-family: monospace;
+                white-space: pre;
+            }
+        </style>
+        <script src="eutils.js" type="module"></script>
+    </head>
+    <body>
+        <div>
+            <label for="rsid">SNP RSid: </label>
+            <input type="text" id="rsid"><input type="button" value="SNP lookup" id="rsid_button">
+        </div>
+        <div>
+            <label for="pbq">Pubmed query: </label>
+            <input type="text" id="pbq"><input type="button" value="pubmed lookup" id="pb_button">
+        </div>
+
+        <div id="console"></div>
+    </body>
+    <script>
+        document.getElementById("rsid_button").addEventListener("click",async ()=>{
+            let rsid=document.getElementById("rsid").value;
+            let div=document.querySelector("#console")
+            div.innerText=""
+            if (!rsid) return
+            let searchRes = await eutils.esearch("SNP",rsid)
+            if (parseInt(searchRes.esearchresult.count)>0){
+                let res = await eutils.esummary(searchRes)
+                div.innerText=JSON.stringify(res.result,null,3)
+            } 
+        })
+        document.getElementById("pb_button").addEventListener("click",async ()=>{
+            let pbq=document.getElementById("pbq").value;
+            let div=document.querySelector("#console")
+            div.innerText=""
+            if (!pbq) return
+            let searchRes = await eutils.esearch("pubmed",pbq)
+            if (parseInt(searchRes.esearchresult.count)>0){
+                let res = await eutils.esummary(searchRes)
+                div.innerText=JSON.stringify(res.result,null,3)
+            } 
+        })
+    </script>
+</html>
