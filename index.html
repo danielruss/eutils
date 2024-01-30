@@ -5,6 +5,15 @@
             #console {
                 font-family: monospace;
                 white-space: pre;
+                max-height: 75vh;
+                overflow: scroll;
+            }
+            footer {
+                position: fixed; 
+                bottom: 0; 
+                left: 0; 
+                padding: 10px;
+                font-family: 'Courier New', Courier, monospace;
             }
         </style>
         <script src="eutils.js" type="module"></script>
@@ -20,8 +29,23 @@
         </div>
 
         <div id="console"></div>
+        <footer>
+            <div id="emailEntry">
+                <label for="email">tool email: </label>
+                <input type="text" id="toolEmailInput"><input type="button" value="set email" id="email_button">
+            </div>
+        </footer>
     </body>
     <script>
+        // let the NCI know the tool that is using eutils.js
+        // you'll want to change these lines...
+        document.getElementById("email_button").addEventListener("click",()=>{
+            eutils.toolName = "eutilsTest"
+            eutils.toolEmail = ""
+            console.log("click")
+            console.log( document.getElementById("toolEmailInput").value )
+            eutils.toolEmail = document.getElementById("toolEmailInput").value
+        })
         document.getElementById("rsid_button").addEventListener("click",async ()=>{
             let rsid=document.getElementById("rsid").value;
             let div=document.querySelector("#console")
